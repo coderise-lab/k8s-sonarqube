@@ -1,11 +1,11 @@
 # k8s-sonarqube
 SonarQube for Kubernetes with PostgresSQL.
 
-You will need a base system in order to run the commands and perform maintenance on the Kubernetes Cluster. You can use a local OS installation (MAC OS Terminal, Ubuntu Bash on Windows, Linux, Virtual Machine).
+You will need a base system in order to run the commands and perform maintenance on the Kubernetes Cluster. You can use a local OS installation (MAC OS Terminal, Linux, Virtual Machine).
 
 The examples in this document assume you are using a linux distro (these instructions should run without edits on Red Hat/Debian based or other flavors), if you are using a different distribution, please correct the commands for the package installers to the one supported by your Linux OS.
 
-All of these commands will be run from the local machine. This machine can also be an instance on a cloud providor or in OPenstack if you are running a localized environment.
+All of these commands will be run from the local machine. This machine can also be an instance on a cloud providor or in Openstack if you are running a localized environment.
 
 The following steps, you will install KubeCTL to manage the Kubernetes cluster and all modes/pods/minions inside them.
 
@@ -19,12 +19,13 @@ chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
 
 ##### Create SSH Keypair for the cluster (You can use an existing one if you like, just know the path to it)
 ssh-keygen -t rsa
+ssh-keygen -t rsa 4096 (OS X 10.10 or higher)
 
 # Creating the Cluster
 ### Create Postgres Password
 There is a .password file included in this repo with a password.
 
-If you are not running this on a local/dev machine, you can use the password provided. If you are running anywhere near a public space, please change it using a strong password generator.
+##### If you are running this on a local/dev machine, you can use the password provided. If you are running anywhere near a public space, please change it using a strong password generator.
 kubectl create secret generic postgres-pwd --from-file=./password
 
 ##### Output
