@@ -74,7 +74,7 @@ kubectl describe svc sonarqubelb
 [user@kube01 ~]$ kubectl describe svc sonarqubelb
 
 ```
-
+Coming soon...
 ```
 
 ##### Default username/password is: admin/admin
@@ -82,8 +82,38 @@ kubectl describe svc sonarqubelb
 # Appendix
 
 ##### Remove a service/deployment/other
-> Service Names can be aquired by running the 'kubectl get svc' command
-
 kubectl delete service service-name
 
 kubectl delete deployment service-name
+
+##### You can obtain all of the deployments/svc/replicationcontrollers and so on with the following command:
+kubectl get all
+
+##### Sample output
+```
+NAME                    DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deploy/sonar-postgres   1         1         1            1           18h
+deploy/sonarqube        1         1         1            1           18h
+
+NAME                           DESIRED   CURRENT   READY     AGE
+rs/sonar-postgres-5cb7db96cb   1         1         1         18h
+rs/sonarqube-664b4fd48         1         1         1         18h
+
+NAME                    DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deploy/sonar-postgres   1         1         1            1           18h
+deploy/sonarqube        1         1         1            1           18h
+
+NAME                           DESIRED   CURRENT   READY     AGE
+rs/sonar-postgres-5cb7db96cb   1         1         1         18h
+rs/sonarqube-664b4fd48         1         1         1         18h
+
+NAME                                 READY     STATUS    RESTARTS   AGE
+po/sonar-postgres-5cb7db96cb-d7wf5   1/1       Running   0          18h
+po/sonarqube-664b4fd48-f62q2         1/1       Running   0          18h
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+svc/kubernetes       ClusterIP   10.233.0.1      <none>        443/TCP        19h
+svc/sonar            NodePort    10.233.45.191   <none>        80:31337/TCP   18h
+svc/sonar-postgres   ClusterIP   10.233.54.237   <none>        5432/TCP       18h
+svc/sonarqube        ClusterIP   10.233.54.173   <none>        9000/TCP       17h
+```
