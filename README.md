@@ -1,6 +1,8 @@
 # k8s-sonarqube
 SonarQube for Kubernetes with PostgresSQL.
 
+#### At this time, the load balancer creation has been removed from the scriptst that are included as there is more testing needed.
+
 You will need a base system in order to run the commands and perform maintenance on the Kubernetes Cluster. You can use a local OS installation (MAC OS Terminal, Linux, Virtual Machine).
 
 The examples in this document assume you are using a linux distro (these instructions should run without edits on Red Hat/Debian based or other flavors), if you are using a different distribution, please correct the commands for the package installers to the one supported by your Linux OS.
