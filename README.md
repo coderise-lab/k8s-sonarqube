@@ -19,6 +19,7 @@ chmod +x ./kubectl && sudo mv ./kubectl /usr/local/bin/kubectl
 
 ##### Create SSH Keypair for the cluster (You can use an existing one if you like, just know the path to it)
 ssh-keygen -t rsa
+
 ssh-keygen -t rsa 4096 (OS X 10.10 or higher)
 
 # Creating the Cluster
