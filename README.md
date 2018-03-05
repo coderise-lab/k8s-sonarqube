@@ -1,4 +1,4 @@
-# SonarQube (server) Installation and Scanning - GoLang
+# SonarQube (server) Installation - for GoLang scanning
 ###### By: Dennis Christilaw (https://github.com/Talderon)
 
 ## Purpose
