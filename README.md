@@ -1,5 +1,6 @@
 # SonarQube (server) Installation - for GoLang scanning
-###### By: Dennis Christilaw (https://github.com/Talderon)
+###### Documentation By: Dennis Christilaw (https://github.com/Talderon)
+###### Original .yaml forked from: https://github.com/coderise-lab/k8s-sonarqube
 
 ## Purpose
 This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes.
