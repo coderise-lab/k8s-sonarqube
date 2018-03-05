@@ -1,8 +1,6 @@
 # SonarQube (server) Installation and Scanning - GoLang
 ###### By: Dennis Christilaw (https://github.com/Talderon)
 
-### This document is still underdevelopment, but I hope to have it finished here by March 05, 2018. Keep checking back!!! Everything that is currently here is completed, I just need to add the scanner config for GoLang at the end. Please open an issue if there is anything that is incorrect or need additional explanation
-
 ## Purpose
 This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes.
 
@@ -171,8 +169,4 @@ Once completed, log back in and verify that the 3 plugins are installed without 
 
 > Administration > Marketplace
 
-# Configuring your local environment to use SonarQube with Golang
-
-## Coming Soon
-
-This document is still underdevelopment, but I hope to have it finished here by March 05, 2018. Keep checking back!!!
+To set up your local environment, please consult the GoLang Sonar-Scanner local configuration Markdown File in this repo.
