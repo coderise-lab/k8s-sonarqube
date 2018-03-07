@@ -93,6 +93,9 @@ sonar.sources=.
 #### Run your first scan
 Once everything has been completed, all you need to do to scan and get the data to the server is:
 ```
-sonar-scanner > report.xml
+gometalinter > report.xml
 ```
 The project should appear in your SonarQube GUI and once the analysis is complete, your data will show up for you to validate.
+
+# Coming Soon
+Code Smells, Unit Testing and more!
