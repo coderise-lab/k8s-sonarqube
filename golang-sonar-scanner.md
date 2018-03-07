@@ -95,6 +95,10 @@ Once everything has been completed, all you need to do to scan and get the data 
 ```
 gometalinter > report.xml
 ```
+This will create the report.xml that the GoLang plugin is expecting.
+
+To upload this to the SonarQube server, just run sonar-scanner where the report.xml lives.
+
 The project should appear in your SonarQube GUI and once the analysis is complete, your data will show up for you to validate.
 
 # Coming Soon
