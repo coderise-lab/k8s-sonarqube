@@ -23,6 +23,36 @@ Installation instructions for various OS's is here: https://golang.org/doc/insta
 
 > This is pretty straightforward, if you have questions, please ask.
 
+Verify that the GoLang Bin folder is in your path (edit path for your installed location)
+```
+/usr/local/go/bin
+```
+
+Create project directory:
+```
+mkdir -p ~/go_projects/{bin,src,pkg}
+```
+
+Add the following lines to your profile (varied depending on OS) - you can put them at the end of the file
+
+> For MAC, CentOS/RedHat or Ubuntu Including Bash for Windows 10), add/create .bash_profile
+
+```
+export GOPATH="$HOME/go_projects"
+export GOBIN="$GOPATH/bin"
+```
+
+Source the file with the paths and updates
+```
+source ~/.bash_profile
+```
+
+Verify your install:
+```
+$ go version
+go version go1.10 darwin/amd64
+```
+
 #### Install GoMetaLinter
 > You can read more about GoMetaLinter at: https://github.com/alecthomas/gometalinter
 
@@ -33,9 +63,9 @@ go get -u gopkg.in/alecthomas/gometalinter.v2
 ```
 2. Rename the directory:
 ```
-mv /home/<<user>>/go/bin/gometalinter.v2 /home/<<user>>/go/bin/gometalinter
+mv /home/<<user>>/go/bin/gometalinter.v2 /home/'user'/go/bin/gometalinter
 ```
-3. Verify that /home/<<user>>/go/bin is in the path (you may have to restart the shell or source the file where $PATH is defined)
+3. Verify that /home/'user'/go/bin is in the path (you may have to restart the shell or source the file where $PATH is defined)
 ```
 echo $Path
 ```
@@ -90,10 +120,24 @@ sonar.sources=.
 ```
 > If you put the config file in 'project_root/scanner', then your 'sonar.sources=' will be 'sonar.sources=../' because the code starts at the project root folder.
 
-#### Run your first scan
-Once everything has been completed, all you need to do to scan and get the data to the server is:
+#### Run the Scan
+This is the first part to get the scanner report
 ```
 gometalinter > report.xml
+```
+
+#### Coverage Report
+
+> Coming Soon
+
+#### Send your test results to SonarQube
+Once everything has been completed, all you need to do to scan and get the data to the server is:
+```
+<<<<<<< HEAD
+sonar-scanner
+=======
+gometalinter > report.xml
+>>>>>>> d42a71ac4d886099ae7bf929cc256d3c437aee32
 ```
 This will create the report.xml that the GoLang plugin is expecting.
 
@@ -101,5 +145,28 @@ To upload this to the SonarQube server, just run sonar-scanner where the report.
 
 The project should appear in your SonarQube GUI and once the analysis is complete, your data will show up for you to validate.
 
+<<<<<<< HEAD
+
+
+
+
+
+
+
+# Scratch
+##### Temporary Placeholder for expanding the documentation
+
+#### Install coveragte tools to GoLang
+```
+go get golang.org/x/tools/cmd/cover
+```
+#### Install SemVer
+```
+go get github.com/blang/semver
+```
+
+
+=======
 # Coming Soon
 Code Smells, Unit Testing and more!
+>>>>>>> d42a71ac4d886099ae7bf929cc256d3c437aee32

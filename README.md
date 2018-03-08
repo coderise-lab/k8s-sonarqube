@@ -1,9 +1,9 @@
-# SonarQube (server) Installation - for GoLang scanning
+# SonarQube (server) Installation (Kubernetes) - for GoLang scanning
 ###### Documentation By: Dennis Christilaw (https://github.com/Talderon)
 ###### Original .yaml forked from: https://github.com/coderise-lab/k8s-sonarqube
 
 ## Purpose
-This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes.
+This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes. The server will have a Postgres SQL backend to store scan data. This will live in a persistant volume that this process creates.
 
 This document does NOT go into setting up a Kubernetes Environment. The assumption is that you have one running and ready for deployment.
 ## Prerequisites
@@ -19,11 +19,11 @@ Tested OS's for this process:
 2. CentOS 7
 3. Red Hat 7
 4. Ubuntu Bash for Windows 10
-5. MAC OS X High Sierra (10.13) (Highly suggested you install Homebrew (https://brew.sh/) and install using that: brew install kubectl)
+5. MAC OS X High Sierra (10.13) (Highly suggested you install Homebrew (https://brew.sh/) and install Kubernetes using that: brew install kubectl)
 
 I am sure other OS's will run this without issue, however, those are the only OS's I have personally tested on.
 
-> I have not tested anything natively on Windows OS's as they are more prone to issues than Linux based systems. Note that these instructions are OS Platform Agnostic as long as it is Linux Based.
+> I have not tested anything natively on Windows OS's as they are more prone to issues than Linux based systems. Note that these instructions are OS Platform Agnostic (for the most part) as long as it is Linux Based. I have no plans (at this time) to test in a native Windows environment due to my current workload. If there is enough demand, I might be able to get it in sooner rather than later.
 
 ## Preparing for deployment of SonarQube with a Postgres Database
 The following steps will be performed on either your local environment or your Development Machine.
@@ -33,11 +33,11 @@ You can clone my repo as it includes a few new things from the original that you
 ```
 git clone https://github.com/Talderon/k8s-sonarqube.git
 ```
-This repo includes a loadbalancer file as well as pre-written scripts to bring up or tear down this deployment.
+This repo includes a loadbalancer file as well as pre-written scripts to bring up or tear down this deployment (currently no in use, there are issues with it, but probably Kubernetes Cluster Config).
 
 ##### Create Postgres Password
 There is a .password file included in this repo with a password.
-> If you are not running this on a local/dev machine, please change it using a strong password generator
+> If you are not running this on a local/dev machine, please change it using a strong password generator.
 kubectl create secret generic postgres-pwd --from-file=./password
 
 ##### Perform the deployment
