@@ -1,6 +1,5 @@
-# SonarQube (server) Installation (Kubernetes) - for GoLang scanning
+# SonarQube with Postgres Database running in Kubernetes for GoLang code scanning
 ###### Documentation By: Dennis Christilaw (https://github.com/Talderon)
-###### Original .yaml forked from: https://github.com/coderise-lab/k8s-sonarqube
 
 ## Purpose
 This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes. The server will have a Postgres SQL backend to store scan data. This will live in a persistant volume that this process creates.
@@ -25,6 +24,11 @@ I am sure other OS's will run this without issue, however, those are the only OS
 
 > I have not tested anything natively on Windows OS's as they are more prone to issues than Linux based systems. Note that these instructions are OS Platform Agnostic (for the most part) as long as it is Linux Based. I have no plans (at this time) to test in a native Windows environment due to my current workload. If there is enough demand, I might be able to get it in sooner rather than later.
 
+## Automation (BETA)
+The automation script (ubuntu-sonarqube setup.sh) included here is designed to fully automate this process with some user prompted input. This script is in BETA, however, I would encourage anyone to try it and leave some feedback.
+
+I plan to have a similar script for YUM based distributions (I will test on CentOS7 and RHEL 7) in the coming days/weeks. Keep checking back!.
+
 ## Preparing for deployment of SonarQube with a Postgres Database
 The following steps will be performed on either your local environment or your Development Machine.
 
@@ -33,7 +37,6 @@ You can clone my repo as it includes a few new things from the original that you
 ```
 git clone https://github.com/Talderon/k8s-sonarqube.git
 ```
-This repo includes a loadbalancer file as well as pre-written scripts to bring up or tear down this deployment (currently no in use, there are issues with it, but probably Kubernetes Cluster Config).
 
 ##### Create Postgres Password
 Using the below method, the user can enter a password securely (no echo), then the password is encrypted and stored in Kubernetes and the variable ($dbpass) is cleared so the password is not stored in an unencrypted state.
