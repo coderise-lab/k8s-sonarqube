@@ -10,7 +10,7 @@ I will add to this document to include Unit Testing and Code Coverage for SonarQ
 ## Prerequisites
 You will need to have the following in order to complete this configuration:
 1. A SonarQube Server Instance up and running with the required configuration. (You can use my other guild here: README.md that is a part of this repo.)
-2. GoLang code to scan (I used this as an example: https://github.com/ugik/GoBooks).
+2. GoLang code to scan (I used this as an [EXAMPLE](https://github.com/ugik/GoBooks)).
 3. Dev/Local machine with access to the internet to download files (or copy from remote location inside network)
 4. Dev/local machine with GoLang installed
 
@@ -20,9 +20,9 @@ You will need to have the following in order to complete this configuration:
 > This document will not cover fine tuning of Rules, Linters or anything else. This is just to get you up and running to check code with GoLang.
 
 #### Install Go GoLang
-Download the correct version from here: https://golang.org/dl/
+Download the correct version from [HERE](https://golang.org/dl/)
 
-Installation instructions for various OS's is here: https://golang.org/doc/install
+Installation instructions for various OS's is [HERE](https://golang.org/doc/install)
 
 > This is pretty straightforward, if you have questions, please ask.
 
@@ -59,7 +59,7 @@ go version go1.10 darwin/amd64
 ```
 
 #### Install GoMetaLinter
-> You can read more about GoMetaLinter at: https://github.com/alecthomas/gometalinter
+> You can read more about GoMetaLinter [HERE](https://github.com/alecthomas/gometalinter)
 
 Once GoLang is installed, you can install and configure GoMetaLinter using the following steps:
 1. Install GoMetaLinter:
@@ -80,7 +80,7 @@ gometalinger --install
 ```
 
 #### Install Sonar-Scanner
-Location of installation files and instructions are here: https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+Location of installation files and instructions are [HERE](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner)
 
 Once installed, you will need to configure the scanner to know where the server is:
 ```
