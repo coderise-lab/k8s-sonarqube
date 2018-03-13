@@ -96,58 +96,15 @@ kube-system   nginx-proxy-local-node-1   1/1       Running   0    1d     10.145.
 ```
 The URL (using the examples above) that you will use to reach Sonar is:
 
-http://10.145.85.140:31862
+http://10.145.85.140:31862/sonar
 
 Verify that you can log into SonarQube.
 
 > The default login is admin/admin.
 
-##### Download the latest version of the GoLang plugin
+##### Download the latest version of the GoLang plugin and copy to SonarQube deployment
 
 > Be sure to get the latest STABLE build and not an RC Build
-
-```
-wget https://github.com/uartois/sonar-golang/releases/download/v1.2.10/sonar-golang-plugin-1.2.10.jar
-```
-
-Put the jar file in $SONAR_PATH/extensions/plugins
-
-##### Get the information needed to copy the plugin to the Sonar Pod
-To get your deployment names, use:
-```
-kubectl get po
-```
-Output will be similar to below. You are looking for the SonarQube deployment, not the postgres.
-```
-NAME                              READY     STATUS    RESTARTS   AGE
-sonar-postgres-5cb7db96cb-9w68k   1/1       Running   0          1d
-sonarqube-664b4fd48-g6nvb         1/1       Running   0          1d
-```
-
-To get your Namespace/Pod names, use the following command:
-```
-kubectl get pods -o wide --all-namespaces
-```
-The top several entries will looking like this:
-
-```
-NAMESPACE     NAME                                        READY     STATUS    RESTARTS   AGE       IP              NODE
-default       sonar-postgres-5cb7db96cb-9w68k             1/1       Running   0          21h       10.233.66.9     local-node-1
-default       sonarqube-664b4fd48-g6nvb                   1/1       Running   0          21h       10.233.64.6     local-node-0
-kube-system   dnsmasq-758774d558-m46t5                    1/1       Running   0          1d        10.233.66.2     local-node-1
-kube-system   dnsmasq-758774d558-nxdcp                    1/1       Running   0          1d        10.233.64.2     local-node-0
-kube-system   dnsmasq-autoscaler-856b5c899b-42t4c         1/1       Running   0          1d        10.233.66.3     local-node-1
-```
-You are looking for the entry that is the same as the pod name you found earlier (sonarqube-664b4fd48-g6nvb in the example above).
-
-> You can also see above the node the deployment is running on (in the case above, it would be Node-0 for sonarqube-664b4fd48-g6nvb)
-
-The Namespace/Pod in this example is: default/sonarqube-664b4fd48-g6nvb
-
-> If you log into the pod directly the folder name will be similar to below:
-```
-/var/lib/docker/devicemapper/mnt/43a83d175fc461f945ba18760dcc1c4969d14701889cf52874960ccff241c030/rootfs/opt/sonarqube/extensions/plugins
-```
 
 You can copy the file from your local machine to the Kubernetes Pod using the following instructions:
 
@@ -159,6 +116,14 @@ Example
 ```
 kubecpl cp /home/user/sonar-golang-plugin-1.2.10.jar default/sonarqube-664b4fd48-g6nvb:/opt/sonarqube/extensions/plugins
 ```
+
+The following snippet can be used to download and copy the plugin to the Container/Pod.
+```bash
+wget https://github.com/uartois/sonar-golang/releases/download/v1.2.11/sonar-golang-plugin-1.2.11.jar
+psonar=( $(kubectl get pods -o wide --all-namespaces | grep sonarqube- ) )
+kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
+```
+
 ##### Install/Enable plugins.
 The following Plugins are requires as well as this GoLang, you can install these from the GUI:
 
@@ -169,7 +134,6 @@ Administration > Marketplace
 > Golang (this is the one we just installed)
 
 > SonarJava (you will need to hit the install button on this one)
-
 
 ###### Re-Start sonarqube server
 Easiest way is to use the GUI to restart
