@@ -38,9 +38,11 @@ mkdir -p ~/go_projects/{bin,src,pkg}
 
 Add the following lines to your profile (varied depending on OS) - you can put them at the end of the file
 
-> For MAC, CentOS/RedHat or Ubuntu Including Bash for Windows 10), add/create .bash_profile
+> For MAC, CentOS/RedHat or Ubuntu Including Bash for Windows 10), edit/create .bash_profile
 
 ```
+export PATH=$PATH:/usr/local/go/bin
+
 export GOPATH="$HOME/go_projects"
 export GOBIN="$GOPATH/bin"
 ```
