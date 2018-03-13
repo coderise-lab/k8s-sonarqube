@@ -131,39 +131,20 @@ gometalinter --checkstyle > report.xml
 
 #### Coverage Report
 
-> Coming Soon
+##### Work In Progress
 
-#### Send your test results to SonarQube
-Once everything has been completed, all you need to do to scan and get the data to the server is:
+Install the code coverage tools:
+
+```bash
+go get github.com/axw/gocov/...
+go get github.com/AlekSi/gocov-xml
+For most projects you'd create coverage using:
 ```
-<<<<<<< HEAD
-sonar-scanner
-=======
-gometalinter > report.xml
->>>>>>> d42a71ac4d886099ae7bf929cc256d3c437aee32
+
+```bash
+go test ./... -coverprofile c.out # requires go 1.10
+# in c.out -- replace absolute paths with a relative path, ex: ./
+gocov convert c.out |  gocov-xml > coverage.xml
 ```
-This will create the report.xml that the GoLang plugin is expecting.
 
-To upload this to the SonarQube server, just run sonar-scanner where the report.xml lives.
-
-The project should appear in your SonarQube GUI and once the analysis is complete, your data will show up for you to validate.
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-# Scratch
-##### Temporary Placeholder for expanding the documentation
-
-#### Install coveragte tools to GoLang
-```
-go get golang.org/x/tools/cmd/cover
-```
-#### Install SemVer
-```
-go get github.com/blang/semver
-```
+For sample projects make test-coverage will generate the test coverage locally under test/coverage.<date>. With the report at index.html. It also copies that file to coverage.xml at the root for use by the pipeline.

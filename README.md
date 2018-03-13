@@ -181,3 +181,8 @@ Once completed, log back in and verify that the 3 plugins are installed without 
 > Administration > Marketplace
 
 To set up your local environment, please consult the GoLang Sonar-Scanner local configuration Markdown File in this repo.
+
+### Continue to Local Environment Setup
+
+[Local ENV Setup](https://github.com/Talderon/k8s-sonarqube/blob/master/golang-sonar-scanner.md)
+
