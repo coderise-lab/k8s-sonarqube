@@ -4,6 +4,9 @@
 ## Purpose
 This document will walk through how to install the needed apps on your local/dev environment to scan GoLang code with Sonar Scanner.
 
+#### Coming Soon ####
+I will add to this document to include Unit Testing and Code Coverage for SonarQube and GoLang!
+
 ## Prerequisites
 You will need to have the following in order to complete this configuration:
 1. A SonarQube Server Instance up and running with the required configuration. (You can use my other guild here: README.md that is a part of this repo.)
@@ -123,7 +126,7 @@ sonar.sources=.
 #### Run the Scan
 This is the first part to get the scanner report
 ```
-gometalinter > report.xml
+gometalinter --checkstyle > report.xml
 ```
 
 #### Coverage Report
@@ -164,9 +167,3 @@ go get golang.org/x/tools/cmd/cover
 ```
 go get github.com/blang/semver
 ```
-
-
-=======
-# Coming Soon
-Code Smells, Unit Testing and more!
->>>>>>> d42a71ac4d886099ae7bf929cc256d3c437aee32

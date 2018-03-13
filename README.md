@@ -36,9 +36,14 @@ git clone https://github.com/Talderon/k8s-sonarqube.git
 This repo includes a loadbalancer file as well as pre-written scripts to bring up or tear down this deployment (currently no in use, there are issues with it, but probably Kubernetes Cluster Config).
 
 ##### Create Postgres Password
-There is a .password file included in this repo with a password.
-> If you are not running this on a local/dev machine, please change it using a strong password generator.
-kubectl create secret generic postgres-pwd --from-file=./password
+Using the below method, the user can enter a password securely (no echo), then the password is encrypted and stored in Kubernetes and the variable ($dbpass) is cleared so the password is not stored in an unencrypted state.
+
+```bash
+echo "Enter your Database Root Password and press enter:"
+read -s dbpass
+kubectl create secret generic postgres-pwd --from-literal=password=$dbpass
+unset dbpass
+```
 
 ##### Perform the deployment
 Run Manifests (Script Below)
@@ -130,7 +135,9 @@ kube-system   dnsmasq-758774d558-m46t5                    1/1       Running   0 
 kube-system   dnsmasq-758774d558-nxdcp                    1/1       Running   0          1d        10.233.64.2     local-node-0
 kube-system   dnsmasq-autoscaler-856b5c899b-42t4c         1/1       Running   0          1d        10.233.66.3     local-node-1
 ```
-You are looking for the entry that is the same as the pod name you found earlier.
+You are looking for the entry that is the same as the pod name you found earlier (sonarqube-664b4fd48-g6nvb in the example above).
+
+> You can also see above the node the deployment is running on (in the case above, it would be Node-0 for sonarqube-664b4fd48-g6nvb)
 
 The Namespace/Pod in this example is: default/sonarqube-664b4fd48-g6nvb
 
