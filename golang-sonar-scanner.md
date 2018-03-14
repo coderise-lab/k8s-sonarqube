@@ -153,7 +153,7 @@ sed -i~ -e "s/My_project/${pjname}/g" sonar-project.properties
 
 #### Run the Scan
 
-#####Code Scanning
+##### Code Scanning
 
 Linting
 

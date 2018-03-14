@@ -22,15 +22,20 @@ In order to complete this process, you will need to have the following:
 
 1. A Kubernetes Cluster that you have access to deploy to. This can be a local cluster or cloud based (I have tested this on AWS, Azure, Google Cloud and OpenStack Enterprise)
 2. A Dev Machine to run the commands from (this machines must have access to the Kubernetes Cluster and access to the internet
-3. Kubectl installed and working (connecting to your KubeCluster) >> https://kubernetes.io/docs/tasks/tools/install-kubectl/
+3. Kubectl installed and working (connecting to your KubeCluster) >> [Kubernetes Install](https://kubernetes.io/docs/tasks/tools/)install-kubectl/
 
 Tested OS's for this process:
 
 1. Ubuntu (14.0.4 and 16.0.4)
 2. CentOS 7
 3. Red Hat 7
-4. Ubuntu Bash for Windows 10
-5. MAC OS X High Sierra (10.13) (Highly suggested you install Homebrew (https://brew.sh/) and install Kubernetes using that: brew install kubectl)
+4.	Ubuntu Bash for Windows 10
+  1.	This is only mentioned here as it is becoming popular, this will NOT work with the Ubuntu Shell for Windows 10
+  2.	This shell is not a Full Ubuntu shell and cannot run virtualization (VMWare, VirtualBox) or Docker
+  3.	This was meant only for Development purposes in Linux native in Windows 10
+5.	MAC OS X High Sierra (10.13) 
+  1.	(Highly suggested you install [Homebrew](https://brew.sh/) and install Kubernetes using that: brew install kubectl)
+
 
 I am sure other OS's will run this without issue, however, those are the only OS's I have personally tested on.
 
@@ -42,7 +47,7 @@ The automation script (ubuntu-sonarqube setup.sh) included here is designed to f
 I plan to have a similar script for YUM based distributions (I will test on CentOS7 and RHEL 7) in the coming days/weeks. Keep checking back!
 
 #### Install Docker
-> Depending on the flavor of the development machine, install Docker https://docs.docker.com/engine/installation/. 
+> Depending on the flavor of the development machine, install [Docker](https://docs.docker.com/engine/installation/).
 > (Ubuntu 16.0.4 LTS, you can install with the below commands)
 
 ```bash
@@ -208,5 +213,5 @@ To set up your local environment, please consult the GoLang Sonar-Scanner local 
 
 ### Continue to Local Environment Setup
 
-[Local ENV Setup](https://github.com/Talderon/k8s-sonarqube/blob/master/golang-sonar-scanner.md)
+[Local Environment Setup](https://github.com/Talderon/k8s-sonarqube/blob/master/golang-sonar-scanner.md)
 
