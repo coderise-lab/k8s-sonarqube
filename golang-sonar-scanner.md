@@ -36,19 +36,26 @@ Installation instructions for various OS's is [HERE](https://golang.org/doc/inst
 
 > This is pretty straightforward, if you have questions, please ask.
 
+> Code block to make it easier
+```bash
+wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.10.linux-amd64.tar.gz
+mkdir -p /root/go_projects/{bin,src,pkg}
+```
+
 Verify that the GoLang Bin folder is in your path (edit path for your installed location)
 ```
 /usr/local/go/bin
 ```
 
-Create project directory:
+Create project directory (only if you did not use the code block above):
 ```
 mkdir -p ~/go_projects/{bin,src,pkg}
 ```
 
 Add the following lines to your profile (varied depending on OS) - you can put them at the end of the file
 
-> For MAC, CentOS/RedHat or Ubuntu Including Bash for Windows 10), edit/create .bash_profile
+> For MAC/Ubuntu, edit/create .bash_profile
 
 ```
 export PATH=$PATH:/usr/local/go/bin
@@ -90,16 +97,11 @@ echo $Path
 ```
 gometalinger --install
 ```
-The following code block does all of this for you if you choose to use it:
-```bash
-go get -u gopkg.in/alecthomas/gometalinter.v2
-mv ~/go_projects/bin/gometalinter.v2 ~/go_projects/bin/gometalinter
-sed -i '100s#go/bin#go/bin:/home/<<user>>/go_projects/bin#' .bashrc && source .bashrc
-gometalinter --install
-```
 
 #### Install Sonar-Scanner
 The following code block will install the Sonar-Scanner and modify the sonar-scanner.properties file to point to your SonarQube Server
+
+> You will need to have the SonarQuber server URL (e.g. HTTP://IP-Address:Port/sonar)
 
 ```bash
 apt install -y unzip
