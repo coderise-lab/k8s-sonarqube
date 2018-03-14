@@ -16,7 +16,10 @@ SVG Badges to how in repositories that status of the quality checks (Optional)
 
 This document does NOT go into setting up a Kubernetes Environment. The assumption is that you have one running and ready for deployment.
 
-There are plans to have setup process created for MiniKube, AWS, Azure and OpenStack Local Dev Environment (thi will work on OpenStack Cloud as well). ETA: Unknown
+There are plans to have setup process created for MiniKube, AWS, Azure and OpenStack Local Dev Environment (this will work on OpenStack Cloud as well). 
+
+> ETA: Unknown
+
 ## Prerequisites
 In order to complete this process, you will need to have the following:
 
