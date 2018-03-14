@@ -19,13 +19,13 @@ I will add to this document to include Unit Testing and Code Coverage for SonarQ
 
 ## Prerequisites
 You will need to have the following in order to complete this configuration:
-1. A SonarQube Server Instance up and running with the required configuration. (You can use my other guild here: README.md that is a part of this repo.)
+1. A SonarQube Server Instance up and running with the required configuration. (You can use my other guide here: [README.md](https://github.com/Talderon/k8s-sonarqube/blob/master/README.md) that is a part of this repo.)
 2. GoLang code to scan (I used this as an [EXAMPLE](https://github.com/ugik/GoBooks)).
 3. Dev/Local machine with access to the internet to download files (or copy from remote location inside network)
 4. Dev/local machine with GoLang installed
 
 ##### Note:
-> This repo and documentation within works primarily with Kubernetes for the Sonar environment setup. You do NOT NEED to set it up this way in order for this part to work. This will work with any sonar environment that is configured properly (see README.md for required plugins and configuration needed on the server).
+> This repo and documentation within works primarily with Kubernetes for the Sonar environment setup. You do NOT NEED to set it up this way in order for this part to work. This will work with any sonar environment that is configured properly (see [README.md](https://github.com/Talderon/k8s-sonarqube/blob/master/README.md) for required plugins and configuration needed on the server).
 
 > This document will not cover fine tuning of Rules, Linters or anything else. This is just to get you up and running to check code with GoLang.
 
