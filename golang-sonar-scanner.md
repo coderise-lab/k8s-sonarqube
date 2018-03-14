@@ -4,6 +4,16 @@
 ## Purpose
 This document will walk through how to install the needed apps on your local/dev environment to scan GoLang code with Sonar Scanner.
 
+This document series is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes. The server will have a Postgres SQL backend to store scan data. This will live in a persistent volume that this process creates.
+
+The reason for this documentation series is that there are no complete set of docs on how to get SonarQube to work with GoLang. GoLang is not officially supported by SonarQube, so the process to get this working can be difficult as there are many moving parts to try and hit this moving target.  Since I was unable to find a complete set of documents that start from the beginning and go to the end in one place, I decided to get this together to help those that are wanting to do this, but find the lack of information daunting.
+
+You will also install the correct plugins for the following functions:
+
+Build Break when scan produced results that do not pass the quality gates (recommended)
+
+SVG Badges to how in repositories that status of the quality checks (Optional)
+
 #### Coming Soon ####
 I will add to this document to include Unit Testing and Code Coverage for SonarQube and GoLang!
 
@@ -62,13 +72,15 @@ go version go1.10 darwin/amd64
 > You can read more about GoMetaLinter [HERE](https://github.com/alecthomas/gometalinter)
 
 Once GoLang is installed, you can install and configure GoMetaLinter using the following steps:
+
+> Be sure to update the paths to the proer directory (normally your $HOME directory)
 1. Install GoMetaLinter:
 ```
 go get -u gopkg.in/alecthomas/gometalinter.v2
 ```
 2. Rename the directory:
 ```
-mv /home/<<user>>/go/bin/gometalinter.v2 /home/'user'/go/bin/gometalinter
+mv /home/<<user>>/go/bin/gometalinter.v2 /home/<<user>>/go/bin/gometalinter
 ```
 3. Verify that /home/'user'/go/bin is in the path (you may have to restart the shell or source the file where $PATH is defined)
 ```
@@ -78,25 +90,28 @@ echo $Path
 ```
 gometalinger --install
 ```
+The following code block does all of this for you if you choose to use it:
+```bash
+go get -u gopkg.in/alecthomas/gometalinter.v2
+mv ~/go_projects/bin/gometalinter.v2 ~/go_projects/bin/gometalinter
+sed -i '100s#go/bin#go/bin:/home/<<user>>/go_projects/bin#' .bashrc && source .bashrc
+gometalinter --install
+```
 
 #### Install Sonar-Scanner
-Location of installation files and instructions are [HERE](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner)
+The following code block will install the Sonar-Scanner and modify the sonar-scanner.properties file to point to your SonarQube Server
 
-Once installed, you will need to configure the scanner to know where the server is:
+```bash
+apt install -y unzip
+wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip
+unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/
+mv /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
+sed -i '100s#go_projects/bin#go_projects/bin:/usr/local/sonar-scanner/bin#' .bashrc && source .bashrc
+read -p "What is the SonarQube URL? (Full url with http://ip_add:port/sonar) >> " surl
+rm /usr/local/sonar-scanner/conf/sonar-scanner.properties
+printf '%s\n' '#----- Default SonarQube server' 'sonar.host.url='${surl} ' ' '#----- Default source code encoding' '#sonar.sourceEncoding=UTF-8' >/usr/local/sonar-scanner/conf/sonar-scanner.properties
 ```
-vi <install_directory>/conf/sonar-scanner.properties
-```
-Update the Default SonarQube Server to the correct value. Example below:
-```
-#Configure here general information about the environment, such as SonarQube DB details for example
-#No information about specific project should appear here
 
-#----- Default SonarQube server
-sonar.host.url=http://10.145.85.140:31862/sonar
-
-#----- Default source code encoding
-#sonar.sourceEncoding=UTF-8
-```
 > Be sure to make sure it is the FULL URL to the UI. In the case above '/sonar' is where the web app lives. If you run into issues, this is something to check and verify.
 
 #### Configure your project
@@ -125,28 +140,44 @@ sonar.sources=.
 ```
 > If you put the config file in 'project_root/scanner', then your 'sonar.sources=' will be 'sonar.sources=../' because the code starts at the project root folder.
 
+If you cloned the repo given earlier, it includes a sample project config file, you can use the following code block to create/modify easily:
+```bash
+cp sonar-project.properties.sample sonar-project.properties
+echo "Enter your Project Key and press enter:"
+read pjkey
+echo "Enter your Project Name and press enter:"
+read pjname
+sed -i~ -e "s/my:project/${pjkey}/g" sonar-project.properties
+sed -i~ -e "s/My_project/${pjname}/g" sonar-project.properties
+```
+
 #### Run the Scan
-This is the first part to get the scanner report
+
+#####Code Scanning
+
+Linting
+
+> Instead of golint, we are using the GoMetaLinter. The meta-linter runs many popular linting tools (which ones are configured in the .gometalinter.json file, though we are using the default settings).
+```bash
+gometalinter –checkstyle > report.xml
 ```
-gometalinter --checkstyle > report.xml
-```
-
-#### Coverage Report
-
-##### Work In Progress
-
 Install the code coverage tools:
-
 ```bash
 go get github.com/axw/gocov/...
 go get github.com/AlekSi/gocov-xml
-For most projects you'd create coverage using:
 ```
 
+For most projects you would create the coverage using:
 ```bash
 go test ./... -coverprofile c.out # requires go 1.10
 # in c.out -- replace absolute paths with a relative path, ex: ./
 gocov convert c.out |  gocov-xml > coverage.xml
 ```
+For some projects make test-coverage will generate the test coverage locally under test/coverage.. With the report at index.html. It also copies that file to coverage.xml at the root for use by the pipeline.
 
-For sample projects make test-coverage will generate the test coverage locally under test/coverage.<date>. With the report at index.html. It also copies that file to coverage.xml at the root for use by the pipeline.
+The CI/CD Pipeline calls the same file.
+
+The exact command you will use will depend on the project. Some projects require you to run the Makefile with arguments that run specific tests.
+
+Unit Tests
+For most projects you'd do go test. For some will use make test.

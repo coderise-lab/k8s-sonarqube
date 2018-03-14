@@ -4,17 +4,29 @@
 ## Purpose
 This document is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes. The server will have a Postgres SQL backend to store scan data. This will live in a persistant volume that this process creates.
 
+This document series is meant to help anyone that wants to perform code quality checks for GoLang with SonarQube running in Kubernetes. The server will have a Postgres SQL backend to store scan data. This will live in a persistent volume that this process creates.
+
+The reason for this documentation series is that there are no complete set of docs on how to get SonarQube to work with GoLang. GoLang is not officially supported by SonarQube, so the process to get this working can be difficult as there are many moving parts to try and hit this moving target.  Since I was unable to find a complete set of documents that start from the beginning and go to the end in one place, I decided to get this together to help those that are wanting to do this, but find the lack of information daunting.
+
+You will also install the correct plugins for the following functions:
+
+Build Break when scan produced results that do not pass the quality gates (recommended)
+
+SVG Badges to how in repositories that status of the quality checks (Optional)
+
 This document does NOT go into setting up a Kubernetes Environment. The assumption is that you have one running and ready for deployment.
+
+There are plans to have setup process created for MiniKube, AWS, Azure and OpenStack Local Dev Environment (thi will work on OpenStack Cloud as well). ETA: Unknown
 ## Prerequisites
 In order to complete this process, you will need to have the following:
 
-1. A Kubernetes Cluster that you have access to deploy to. This can be a local cluster or cloud based (I have tested this on AWS, Azure, Google Cloud and OpenStack)
+1. A Kubernetes Cluster that you have access to deploy to. This can be a local cluster or cloud based (I have tested this on AWS, Azure, Google Cloud and OpenStack Enterprise)
 2. A Dev Machine to run the commands from (this machines must have access to the Kubernetes Cluster and access to the internet
 3. Kubectl installed and working (connecting to your KubeCluster) >> https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
 Tested OS's for this process:
 
-1. Ubuntu (14.0.4 and 16.0.4) (When installing kubectl on Ubuntu, I suggest you use the Snap install method: sudo snap install kubectl --classic)
+1. Ubuntu (14.0.4 and 16.0.4)
 2. CentOS 7
 3. Red Hat 7
 4. Ubuntu Bash for Windows 10
@@ -27,7 +39,39 @@ I am sure other OS's will run this without issue, however, those are the only OS
 ## Automation (BETA)
 The automation script (ubuntu-sonarqube setup.sh) included here is designed to fully automate this process with some user prompted input. This script is in BETA, however, I would encourage anyone to try it and leave some feedback.
 
-I plan to have a similar script for YUM based distributions (I will test on CentOS7 and RHEL 7) in the coming days/weeks. Keep checking back!.
+I plan to have a similar script for YUM based distributions (I will test on CentOS7 and RHEL 7) in the coming days/weeks. Keep checking back!
+
+#### Install Docker
+> Depending on the flavor of the development machine, install Docker https://docs.docker.com/engine/installation/. 
+> (Ubuntu 16.0.4 LTS, you can install with the below commands)
+
+```bash
+sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common make
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get -y update
+sudo apt-get install docker-ce
+```
+
+##### The following applies if you install on your local machine
+
+> When you install Docker, Docker may choose an IP address that is the same as the wifi address you are using to connect from your main machine. You need to change the default IP for Docker. It's easiest to do this while being connected with a network cable instead of wifi. Add a new file to the new development machine /etc/docker/daemon.json containing (You can choose your IP CIDER based on your network config):
+```json
+{
+   "bip": "172.30.30.1/24"
+}
+```
+#### Install kubectl
+> Install kubectl on your development machine to talk to kube master api instead of the need to login into kubernetes cluster machines.
+```bash
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+```
+Install JQ
+```bash
+sudo apt-get install -y jq
+```
 
 ## Preparing for deployment of SonarQube with a Postgres Database
 The following steps will be performed on either your local environment or your Development Machine.
@@ -39,7 +83,7 @@ git clone https://github.com/Talderon/k8s-sonarqube.git
 ```
 
 ##### Create Postgres Password
-Using the below method, the user can enter a password securely (no echo), then the password is encrypted and stored in Kubernetes and the variable ($dbpass) is cleared so the password is not stored in an unencrypted state.
+Using the below method, the user can enter a password securely (no echo), then the password is encrypted and stored in Kubernetes and the variable ($dbpass) is cleared so the password is not stored in an unencrypted state beyond the time it takes to create/encrypt the password.
 
 ```bash
 echo "Enter your Database Root Password and press enter:"
@@ -51,8 +95,14 @@ unset dbpass
 ##### Perform the deployment
 Run Manifests (Script Below)
 
->Edit the directory variable to match where you put the .yaml files
->The files must be run in the order they are presented in the $name variable
+> Edit the directory variable to match where you put the .yaml files
+> The files must be run in the order they are presented in the $name variable
+> The script is oncluded in this repo for your benefit
+> in order to run the included scripts, execute the following command in the repo directory:
+```bash
+chmod +x *.sh
+```
+Script Contents (creation). The removeal script can be viewed separately.
 
 ```bash
 #!/bin/bash
@@ -96,7 +146,7 @@ kube-system   nginx-proxy-local-node-1   1/1       Running   0    1d     10.145.
 ```
 The URL (using the examples above) that you will use to reach Sonar is:
 
-http://10.145.85.140:31862/sonar
+> http://10.145.85.140:31862/sonar
 
 Verify that you can log into SonarQube.
 
@@ -124,16 +174,26 @@ psonar=( $(kubectl get pods -o wide --all-namespaces | grep sonarqube- ) )
 kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
 ```
 
+Install Build-Breaker Plugin (recommended)
+
+> This plugin will mark the build failed if the project fails its quality gate or uses a forbidden configuration. These checks happen after analysis has been submitted to the server, so it does not prevent a new analysis from showing up in SonarQube.
+
+```bash
+wget https://github.com/SonarQubeCommunity/sonar-build-breaker/releases/download/2.2/sonar-build-breaker-plugin-2.2.jar
+psonar=( $(kubectl get pods -o wide --all-namespaces | grep sonarqube- ) )
+kubectl cp sonar-build-breaker-plugin-2.2.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
+```
+
 ##### Install/Enable plugins.
 The following Plugins are requires as well as this GoLang, you can install these from the GUI:
 
 Administration > Marketplace
 
 > Checkstyle (this should be automatically installed with the GoLang Plugin)
-
-> Golang (this is the one we just installed)
-
+> Golang (this is the one we just installed (may not show up until after restart))
 > SonarJava (you will need to hit the install button on this one)
+> Build Breaker Plugin (this is one that we just installed (may not show up until after restart))
+> SVG Badges (you will need to hit the install button on this one (Optional))
 
 ###### Re-Start sonarqube server
 Easiest way is to use the GUI to restart
