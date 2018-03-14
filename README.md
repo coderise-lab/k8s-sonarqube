@@ -25,7 +25,7 @@ In order to complete this process, you will need to have the following:
 
 1. A Kubernetes Cluster that you have access to deploy to. This can be a local cluster or cloud based (I have tested this on AWS, Azure, Google Cloud and OpenStack Enterprise)
 2. A Dev Machine to run the commands from (this machines must have access to the Kubernetes Cluster and access to the internet
-3. Kubectl installed and working (connecting to your KubeCluster) >> [Kubernetes Install](https://kubernetes.io/docs/tasks/tools/)install-kubectl/
+3. Kubectl installed and working (connecting to your KubeCluster) >> [Kubernetes Install](https://kubernetes.io/docs/tasks/tools/)
 
 Tested OS's for this process:
 
