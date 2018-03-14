@@ -29,12 +29,12 @@ Tested OS's for this process:
 1. Ubuntu (14.0.4 and 16.0.4)
 2. CentOS 7
 3. Red Hat 7
-4.	Ubuntu Bash for Windows 10
-  1.	This is only mentioned here as it is becoming popular, this will NOT work with the Ubuntu Shell for Windows 10
-  2.	This shell is not a Full Ubuntu shell and cannot run virtualization (VMWare, VirtualBox) or Docker
-  3.	This was meant only for Development purposes in Linux native in Windows 10
+4. Ubuntu Bash for Windows 10
+    1. This is only mentioned here as it is becoming popular, this will NOT work with the Ubuntu Shell for Windows 10
+    2. This shell is not a Full Ubuntu shell and cannot run virtualization (VMWare, VirtualBox) or Docker
+    3. This was meant only for Development purposes in Linux native in Windows 10
 5.	MAC OS X High Sierra (10.13) 
-  1.	(Highly suggested you install [Homebrew](https://brew.sh/) and install Kubernetes using that: brew install kubectl)
+    1. (Highly suggested you install [Homebrew](https://brew.sh/) and install Kubernetes using that: brew install kubectl)
 
 
 I am sure other OS's will run this without issue, however, those are the only OS's I have personally tested on.
