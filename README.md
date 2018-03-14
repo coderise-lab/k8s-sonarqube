@@ -183,12 +183,19 @@ kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions
 ```
 
 > This line sets the output of the kubectl get pods -o wide --all-namespaces output into an array named psonar
+
 > psonar=( $(kubectl get pods -o wide --all-namespaces | grep sonarqube- ) )
+
 >     default       sonarqube-664b4fd48-d7vbs                   1/1       Running   1          2d        10.233.65.9    local-node-0
+
 > This line puts the kubectl cp (copy) command together
+
 >     kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
+
 > The ${psonar[1]} is calling the second field in the array (first variable (default) is stored at position 0) which is sonarqube-664b4fd48-d7vbs
+
 > The command would be: 
+
 >     kubectl cp sonar-golang-plugin-1.2.11.jar sonarqube-664b4fd48-d7vbs:/opt/sonarqube/extensions/plugins/
 
 Install Build-Breaker Plugin (recommended)
