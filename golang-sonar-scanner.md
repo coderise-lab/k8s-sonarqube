@@ -12,10 +12,7 @@ You will also install the correct plugins for the following functions:
 
 Build Break when scan produced results that do not pass the quality gates (recommended)
 
-SVG Badges to how in repositories that status of the quality checks (Optional)
-
-#### Coming Soon ####
-I will add to this document to include Unit Testing and Code Coverage for SonarQube and GoLang!
+SVG Badges to show in repositories that status of the quality checks (Optional)
 
 ## Prerequisites
 You will need to have the following in order to complete this configuration:
@@ -153,16 +150,19 @@ sed -i~ -e "s/my:project/${pjkey}/g" sonar-project.properties
 sed -i~ -e "s/My_project/${pjname}/g" sonar-project.properties
 ```
 
-#### Run the Scan
+## Run the Scan
 
-##### Code Scanning
+### Code Scanning
 
-Linting
+##### Linting
 
 > Instead of golint, we are using the GoMetaLinter. The meta-linter runs many popular linting tools (which ones are configured in the .gometalinter.json file, though we are using the default settings).
 ```bash
 gometalinter –checkstyle > report.xml
 ```
+
+##### Coverage
+
 Install the code coverage tools:
 ```bash
 go get github.com/axw/gocov/...
@@ -181,5 +181,6 @@ The CI/CD Pipeline calls the same file.
 
 The exact command you will use will depend on the project. Some projects require you to run the Makefile with arguments that run specific tests.
 
-Unit Tests
+##### Unit Tests
+
 For most projects you'd do go test. For some will use make test.
