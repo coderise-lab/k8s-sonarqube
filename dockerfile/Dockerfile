@@ -39,7 +39,7 @@ RUN	wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz && \
     source /etc/environment
 
 # Install GoMetaLinter
-Run go get -u gopkg.in/alecthomas/gometalinter.v2 && \
+RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
 	mv $HOME/go/bin/gometalinter.v2 $HOME/go/bin/gometalinter
     gometalinger --install
 
@@ -49,7 +49,7 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 	mv /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
 
 # Cleans the local repository from retrieved package files	
-    apt-get clean
+RUN apt-get clean
 
 
 
