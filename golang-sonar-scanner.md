@@ -8,6 +8,8 @@ This document series is meant to help anyone that wants to perform code quality 
 
 The reason for this documentation series is that there are no complete set of docs on how to get SonarQube to work with GoLang. GoLang is not officially supported by SonarQube, so the process to get this working can be difficult as there are many moving parts to try and hit this moving target.  Since I was unable to find a complete set of documents that start from the beginning and go to the end in one place, I decided to get this together to help those that are wanting to do this, but find the lack of information daunting.
 
+The Code Blocks included here are samples that should work without edit if you are setting this up as a brand new instance. Be sure to check these and verify they will not make changes that would break other apps/tool.
+
 You will also install the correct plugins for the following functions:
 
 Build Break when scan produced results that do not pass the quality gates (recommended)
