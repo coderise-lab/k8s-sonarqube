@@ -1,10 +1,15 @@
 # Ubuntu 16.04 with SonarQube/GoLand scanning tools installed.
 #    Barebones installation with GoLang,GoMetaLinter and Sonar-scanner installed and configured
 # Creation Date: March 15, 2018
-# Build image with:  
 
-FROM ubuntu:16.04
+# Author
 MAINTAINER Dennis Christilaw (https://github.com/Talderon)
+
+# extra metadata
+LABEL version="0.5.2"
+LABEL description="Beta build of SonarQube Scanner for GoLang."
+
+FROM ubuntu:16.04:lts
 
 ENV HOME /root
 
@@ -13,12 +18,21 @@ RUN uhost=( $(cat /etc/hostname ) ) && \
     echo '127.0.0.1 '$uhost >> /etc/hosts
 
 # Run updates to ensure the repo's are updated
-RUN apt-get update -y && \
-    apt-get upgrade -y
+RUN apt-get update -y && apt-get upgrade -y
 
 # Installs software in order to allow for independent vendor software sources, in particular the “add-apt-repository” command that is used elsewhere
 # As well as come CLI Tools that are needed for various functions.
-RUN apt-get install -y software-properties-common apt-transport-https ca-certificates curl software-properties-common make vim unzip
+RUN apt-get install -qy \
+    software-properties-common \
+    apt-transport-https \
+    ca-certificates curl \
+    software-properties-common \
+    make \
+    vim \
+    unzip \
+    wget \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Docker
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
@@ -48,7 +62,9 @@ RUN go get -u gopkg.in/alecthomas/gometalinter.v2 && \
 # Install Sonar-Scanner
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.0.3.778-linux.zip
     unzip sonar-scanner-cli-3.0.3.778-linux.zip -d /usr/local/
-    mv /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
+    mv -f /usr/local/sonar-scanner-3.0.3.778-linux /usr/local/sonar-scanner
 
-# Cleans the local repository from retrieved package files	
-RUN apt-get clean
+# Cleanup	
+RUN apt-get -qy autoremove
+rm -f ~/go1.10.linux-amd64.tar.gz
+rm -f ~/sonar-scanner-cli-3.0.3.778-linux.zip
