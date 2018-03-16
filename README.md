@@ -175,11 +175,24 @@ Example
 kubecpl cp /home/user/sonar-golang-plugin-1.2.10.jar default/sonarqube-664b4fd48-g6nvb:/opt/sonarqube/extensions/plugins
 ```
 
-The following snippet can be used to download and copy the plugin to the Container/Pod.
+The following snippet can be used to download and copy all of the plugins to the Container/Pod.
+
+> Just remove the download line for the plugins you don't need. It is recommended to install the following plugins to complete this project.
+
+> Note that some plugins have other dependencies, so those will be installed automatically. Do not be alarmed if other plugins are installed as well.
+
 ```bash
+mkdir -p ~/.downloads
+cd ~/.downloads
 wget https://github.com/uartois/sonar-golang/releases/download/v1.2.11/sonar-golang-plugin-1.2.11.jar
+wget https://github.com/checkstyle/sonar-checkstyle/releases/download/4.8/checkstyle-sonar-plugin-4.8.jar
+wget https://github.com/SonarQubeCommunity/sonar-build-breaker/releases/download/2.2/sonar-build-breaker-plugin-2.2.jar
+wget https://github.com/QualInsight/qualinsight-plugins-sonarqube-badges/releases/download/qualinsight-plugins-sonarqube-badges-3.0.1/qualinsight-sonarqube-badges-3.0.1.jar
+wget https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-4.1.0.6085.jar
+wget https://sonarsource.bintray.com/Distribution/sonar-java-plugin/sonar-java-plugin-5.1.1.13214.jar
+wget https://sonarsource.bintray.com/Distribution/sonar-xml-plugin/sonar-xml-plugin-1.4.3.1027.jar
 psonar=( $(kubectl get pods -o wide --all-namespaces | grep sonarqube- ) )
-kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
+kubectl cp *.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
 ```
 
 > This line sets the output of the kubectl get pods -o wide --all-namespaces output into an array named psonar
@@ -190,7 +203,7 @@ kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions
 
 > This line puts the kubectl cp (copy) command together
 
->     kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
+>     kubectl cp *.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
 
 > The ${psonar[1]} is calling the second field in the array (first variable (default) is stored at position 0) which is sonarqube-664b4fd48-d7vbs
 
@@ -198,33 +211,12 @@ kubectl cp sonar-golang-plugin-1.2.11.jar ${psonar[1]}:/opt/sonarqube/extensions
 
 >     kubectl cp sonar-golang-plugin-1.2.11.jar sonarqube-664b4fd48-d7vbs:/opt/sonarqube/extensions/plugins/
 
-Install Build-Breaker Plugin (recommended)
-
-> This plugin will mark the build failed if the project fails its quality gate or uses a forbidden configuration. These checks happen after analysis has been submitted to the server, so it does not prevent a new analysis from showing up in SonarQube.
-
-```bash
-wget https://github.com/SonarQubeCommunity/sonar-build-breaker/releases/download/2.2/sonar-build-breaker-plugin-2.2.jar
-psonar=( $(kubectl get pods -o wide --all-namespaces | grep sonarqube- ) )
-kubectl cp sonar-build-breaker-plugin-2.2.jar ${psonar[1]}:/opt/sonarqube/extensions/plugins/
-```
-
-##### Install/Enable plugins.
-The following Plugins are requires as well as this GoLang, you can install these from the GUI:
-
-Administration > Marketplace
-
-> Checkstyle (this should be automatically installed with the GoLang Plugin)
-> Golang (this is the one we just installed (may not show up until after restart))
-> SonarJava (you will need to hit the install button on this one)
-> Build Breaker Plugin (this is one that we just installed (may not show up until after restart))
-> SVG Badges (you will need to hit the install button on this one (Optional))
-
 ###### Re-Start sonarqube server
 Easiest way is to use the GUI to restart
 
 > Administration > System > Restart Server
 
-Once completed, log back in and verify that the 3 plugins are installed without errors.
+Once completed, log back in and verify that the plugins are installed without errors.
 
 > Administration > Marketplace
 
